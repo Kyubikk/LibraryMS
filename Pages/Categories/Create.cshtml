@@ -1,0 +1,20 @@
+@page
+@model LoginSystemApp.Pages.Categories.CreateModel
+
+<h2>Create New Category</h2>
+
+<div style="max-width: 600px; margin: auto;">
+    <form method="post">
+        <div class="form-group">
+            <label for="CategoryName">Category Name</label>
+            <input asp-for="Category.CategoryName" class="form-control" required />
+            <span asp-validation-for="Category.CategoryName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Category</button>
+        <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

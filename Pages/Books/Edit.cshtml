@@ -1,0 +1,45 @@
+@page "{id:int}"
+@model LoginSystemApp.Pages.Books.EditModel
+
+<h2>Edit Book</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Book Title</label>
+        <input asp-for="Book.Title" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Author</label>
+        <select asp-for="Book.AuthorId" class="form-control" asp-items="Model.Authors"></select>
+    </div>
+    <div class="form-group">
+        <label>Publisher</label>
+        <select asp-for="Book.PublisherId" class="form-control" asp-items="Model.Publishers"></select>
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <select asp-for="Book.CategoryId" class="form-control" asp-items="Model.Categories"></select>
+    </div>
+    <div class="form-group">
+        <label>Year Published</label>
+        <input asp-for="Book.YearPublished" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>ISBN</label>
+        <input asp-for="Book.ISBN" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="Book.Quantity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Available</label>
+        <input asp-for="Book.Available" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Cover Image</label>
+        <input type="file" asp-for="CoverImage" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

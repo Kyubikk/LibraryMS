@@ -1,0 +1,11 @@
+@page "{id:int}"
+@model LoginSystemApp.Pages.Publishers.DeleteModel
+
+<h2>Delete Publisher</h2>
+
+<p>Are you sure you want to delete the publisher "<strong>@Model.Publisher.Name</strong>"?</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

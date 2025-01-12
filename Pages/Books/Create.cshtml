@@ -1,0 +1,41 @@
+@page
+@model LoginSystemApp.Pages.Books.CreateModel
+
+<h2>Add New Book</h2>
+<div style="max-width: 600px; margin: auto;">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="Title">Book Title</label>
+            <input asp-for="Book.Title" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="AuthorId">Author</label>
+            <select asp-for="Book.AuthorId" class="form-control" asp-items="Model.Authors" required></select>
+        </div>
+        <div class="form-group">
+            <label for="PublisherId">Publisher</label>
+            <select asp-for="Book.PublisherId" class="form-control" asp-items="Model.Publishers" required></select>
+        </div>
+        <div class="form-group">
+            <label for="CategoryId">Category</label>
+            <select asp-for="Book.CategoryId" class="form-control" asp-items="Model.Categories" required></select>
+        </div>
+        <div class="form-group">
+            <label for="YearPublished">Year Published</label>
+            <input asp-for="Book.YearPublished" type="number" class="form-control" min="1500" max="2100" required />
+        </div>
+        <div class="form-group">
+            <label for="ISBN">ISBN</label>
+            <input asp-for="Book.ISBN" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Quantity">Quantity</label>
+            <input asp-for="Book.Quantity" type="number" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="CoverImage">Cover Image</label>
+            <input type="file" id="CoverImage" name="CoverImage" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
+</div>

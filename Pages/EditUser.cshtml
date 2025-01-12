@@ -1,0 +1,39 @@
+@page "{id:int}"
+@model LoginSystemApp.Pages.EditUserModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="edit-user-form">
+        <h3>Edit User</h3>
+        @if (Model.User != null)
+        {
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="User.Id" />
+                <div>
+                    <label asp-for="User.Username"></label>
+                    <input asp-for="User.Username" class="form-control" />
+                    <span asp-validation-for="User.Username" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="User.Role"></label>
+                    <input asp-for="User.Role" class="form-control" />
+                    <span asp-validation-for="User.Role" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        }
+        else
+        {
+            <p>User not found.</p>
+            <a asp-page="/Admin" class="btn btn-secondary">Go Back</a>
+        }
+    </div>
+</body>
+</html>

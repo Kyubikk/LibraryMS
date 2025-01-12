@@ -1,0 +1,105 @@
+@page
+@model LoginSystemApp.Pages.BorrowReturn.EditModel
+
+<h2>Edit Borrow Transaction</h2>
+
+<div class="mb-4">
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>
+
+<form method="post">
+    <div class="form-group">
+        <label for="borrowerName">Borrower Name</label>
+        <input type="text" id="borrowerName" name="BorrowReturn.BorrowerName" class="form-control" value="@Model.BorrowReturn.BorrowerName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="borrowerContact">Borrower Contact</label>
+        <input type="text" id="borrowerContact" name="BorrowReturn.BorrowerContact" class="form-control" value="@Model.BorrowReturn.BorrowerContact" required />
+    </div>
+
+    <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input type="date" id="dueDate" name="BorrowReturn.DueDate" class="form-control" value="@Model.BorrowReturn.DueDate.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <div class="form-group">
+        <label for="fine">Fine</label>
+        <input type="number" id="fine" name="BorrowReturn.Fine" class="form-control" value="@Model.BorrowReturn.Fine" min="0" step="0.01" />
+    </div>
+
+    <div class="form-group">
+        <label for="bookSelect">Select Book</label>
+        <select id="bookSelect" class="form-control" onchange="addBookToBorrowedList()">
+            <option value="">Search and select a book...</option>
+            @foreach (var book in Model.AvailableBooks)
+            {
+                <option value="@book.BookId" data-title="@book.Title">@book.Title (@book.Available copies)</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Books Borrowed</label>
+        <table class="table table-bordered" id="borrowedBooksTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model.BorrowedBooks)
+                {
+                    <tr data-book-id="@detail.BookId">
+                        <td>@detail.Book.Title</td>
+                        <td>
+                            <input type="number" name="BookQuantities[@detail.BookId]" value="@detail.Quantity" class="form-control" min="1" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="removeBookFromBorrowedList(this)">Remove</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<script>
+    function addBookToBorrowedList() {
+        const bookSelect = document.getElementById('bookSelect');
+        const selectedBookId = bookSelect.value;
+        const selectedBookTitle = bookSelect.options[bookSelect.selectedIndex].getAttribute('data-title');
+
+        if (!selectedBookId) return;
+
+        const borrowedBooksTable = document.getElementById('borrowedBooksTable').querySelector('tbody');
+        if (document.querySelector(`tr[data-book-id="${selectedBookId}"]`)) {
+            alert('This book is already added to the list.');
+            return;
+        }
+
+        const newRow = document.createElement('tr');
+        newRow.setAttribute('data-book-id', selectedBookId);
+        newRow.innerHTML = `
+            <td>${selectedBookTitle}</td>
+            <td>
+                <input type="number" name="BookQuantities[${selectedBookId}]" value="1" class="form-control" min="1" />
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="removeBookFromBorrowedList(this)">Remove</button>
+            </td>
+        `;
+        borrowedBooksTable.appendChild(newRow);
+        bookSelect.value = '';
+    }
+
+    function removeBookFromBorrowedList(button) {
+        const row = button.closest('tr');
+        row.remove();
+    }
+</script>

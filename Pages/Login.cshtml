@@ -1,0 +1,47 @@
+@page
+@model LoginModel
+@{
+    Layout = null;  // Tắt layout cho trang này
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1502700807168-484a3e7889d0?q=80&w=3548&auto=format&fit=crop&ixlib=rb-4.0.3')">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-primary/30 animate-gradient"></div>
+    <div class="relative w-full max-w-md p-8 mx-4 bg-black/40 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2 animate-pulse">Library Management</h1>
+            <p class="text-white/80">Sign In to Your Account</p>
+        </div>
+        <form method="post" class="space-y-6">
+            <div class="transform hover:scale-105 transition-transform duration-300">
+                <label for="username" class="block text-sm font-medium text-white mb-2">Username</label>
+                <input type="text" id="username" name="Username" required aria-label="Username" placeholder="Enter your username" class="w-full px-4 py-3 rounded-lg border-2 border-white/20 bg-black/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+            </div>
+            <div class="transform hover:scale-105 transition-transform duration-300">
+                <label for="password" class="block text-sm font-medium text-white mb-2">Password</label>
+                <input type="password" id="password" name="Password" required aria-label="Password" placeholder="Enter your password" class="w-full px-4 py-3 rounded-lg border-2 border-white/20 bg-black/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <p class="text-red-500 text-center">@Model.ErrorMessage</p>
+            }
+
+            <div class="space-y-4">
+                <button type="submit" class="w-full bg-primary/80 text-white py-3 rounded-lg hover:bg-primary transition-colors font-medium transform hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-primary/50">Log In</button>
+            </div>
+        </form>
+
+        <!-- Button to go back to home -->
+        <div class="mt-4 text-center">
+            <a href="/" class="text-white hover:text-primary font-medium text-sm">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

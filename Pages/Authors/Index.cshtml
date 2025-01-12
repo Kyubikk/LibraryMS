@@ -1,0 +1,109 @@
+@page
+@model LoginSystemApp.Pages.Authors.IndexModel
+
+<style>
+    .table tbody tr:hover {
+        background-color: #e2f6e7;
+        transition: background-color 0.3s ease;
+    }
+
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<h2>Author List</h2>
+<a asp-page="./Create" class="btn btn-primary" style="margin-bottom: 15px;">
+    <i class="bi bi-plus-circle"></i> Add New Author
+</a>
+
+<form method="get" style="margin-bottom: 20px;">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Search authors..." class="form-control" />
+</form>
+
+@if (Model.Authors == null || !Model.Authors.Any())
+{
+    <p>No authors available.</p>
+}
+else
+{
+    <table class="table table-bordered rounded">
+        <thead>
+            <tr>
+                <th>Author Name</th>
+                <th>Bio</th>
+                <th>Date of Birth</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in Model.Authors)
+            {
+                <tr>
+                    <td>@author.Name</td>
+                    <td>@author.Bio</td>
+                    <td>@author.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-page="./Edit" asp-route-id="@author.AuthorId" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="./Delete" asp-route-id="@author.AuthorId" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Thanh phân trang -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.Authors.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Authors.PageIndex - 1)">Previous</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= Model.Authors.TotalPages; i++)
+            {
+                if (i == Model.Authors.PageIndex)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@i">@i</a>
+                    </li>
+                }
+            }
+
+            @if (Model.Authors.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Authors.PageIndex + 1)">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            }
+        </ul>
+    </nav>
+}

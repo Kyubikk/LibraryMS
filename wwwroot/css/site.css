@@ -1,0 +1,80 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F9F9F9;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  color: #4CAF50;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.table th, .table td {
+  border: 1px solid #DDDDDD;
+  padding: 10px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #F2F2F2;
+}
+
+.btn {
+  padding: 8px 12px;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+}
+
+.btn-primary:hover {
+  background-color: #45A049;
+}
+
+.btn-warning {
+  background-color: #FFC107;
+  color: black;
+}
+
+.btn-warning:hover {
+  background-color: #FFA000;
+}
+
+.btn-danger {
+  background-color: #F44336;
+}
+
+.btn-danger:hover {
+  background-color: #E53935;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #4CAF50;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #DDDDDD;
+  border-radius: 4px;
+}

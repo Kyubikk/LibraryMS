@@ -1,0 +1,263 @@
+@page
+@model LoginSystemApp.Pages.BorrowReturn.IndexModel
+
+<h2>Borrow/Return Transactions</h2>
+<a asp-page="./Create" class="btn btn-primary" style="margin-bottom: 15px;">Add New Transaction</a>
+
+<style>
+    .table tbody tr:hover {
+        background-color: #e2f6e7;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination .page-link {
+        color: #007bff;
+    }
+
+    .pagination .page-link:hover {
+        color: #0056b3;
+    }
+
+    .table tbody tr {
+        cursor: pointer;
+    }
+    .status-borrowed {
+        color: blue;
+    }
+    .status-returned {
+        color: green;
+    }
+    .status-overdue {
+        color: red;
+    }
+</style>
+
+<form method="post" style="display: none;">
+    @Html.AntiForgeryToken()
+</form>
+
+<form method="get" style="margin-bottom: 20px;">
+    <div class="input-group">
+        <input style="width: 80%;" type="text" name="searchString" value="@Model.SearchString" placeholder="Search by Transaction ID, Borrower Name" class="form-control" />
+
+        <!-- Dropdown filter -->
+        <select name="statusFilter" class="form-select">
+            <option value="">All Statuses</option>
+            <option value="Borrowed" selected="@(Model.StatusFilter == "Borrowed" ? "selected" : null)">Borrowed</option>
+            <option value="Returned" selected="@(Model.StatusFilter == "Returned" ? "selected" : null)">Returned</option>
+            <option value="Overdue" selected="@(Model.StatusFilter == "Overdue" ? "selected" : null)">Overdue</option>
+        </select>
+
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+
+@if (Model.BorrowReturns == null || !Model.BorrowReturns.Any())
+{
+    <p>No transactions found.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Borrower</th>
+                <th>Contact</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Fine</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.BorrowReturns)
+            {
+                <tr data-transaction-id="@transaction.TransactionId" onclick="loadTransactionDetails(@transaction.TransactionId)">
+                    <td>@transaction.TransactionId</td>
+                    <td>@transaction.BorrowerName</td>
+                    <td>@transaction.BorrowerContact</td>
+                    <td>@transaction.BorrowDate.ToShortDateString()</td>
+                    <td>@transaction.DueDate.ToShortDateString()</td>
+                    <td class="
+                    @(transaction.Status == "Borrowed" ? "status-borrowed" :
+                    (transaction.Status == "Returned" ? "status-returned" : 
+                    (transaction.Status == "Overdue" ? "status-overdue" : "")))
+                ">
+                    @transaction.Status
+                </td>
+                    <td>@transaction.Fine</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            @* <a asp-page="./Edit" asp-route-id="@transaction.TransactionId" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a> *@
+                            <button class="btn btn-warning" onclick="markAsReturned(@transaction.TransactionId, event)">
+                                <i class="bi bi-check-circle"></i> Return
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav aria-label="Pagination">
+        <ul class="pagination justify-content-start">
+            @if (Model.BorrowReturns.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.BorrowReturns.PageIndex - 1)">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <i class="bi bi-arrow-left"></i>
+                    </span>
+                </li>
+            }
+
+            @for (int i = 1; i <= Model.BorrowReturns.TotalPages; i++)
+            {
+                if (i == Model.BorrowReturns.PageIndex)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@i">@i</a>
+                    </li>
+                }
+            }
+
+            @if (Model.BorrowReturns.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.BorrowReturns.PageIndex + 1)">
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <i class="bi bi-arrow-right"></i>
+                    </span>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+<div class="modal fade" id="transactionDetailsModal" tabindex="-1" aria-labelledby="transactionDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transactionDetailsModalLabel">Transaction Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+                <p><strong>Borrower Name:</strong> <span id="borrowerName"></span></p>
+                <p><strong>Contact:</strong> <span id="borrowerContact"></span></p>
+                <p><strong>Borrow Date:</strong> <span id="borrowDate"></span></p>
+                <p><strong>Due Date:</strong> <span id="dueDate"></span></p>
+                <p><strong>Status:</strong> <span id="status"></span></p>
+                <p><strong>Fine:</strong> <span id="fine"></span></p>
+                <hr />
+                <h5>Books Borrowed:</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="booksBorrowed"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadTransactionDetails(transactionId) {
+        fetch(`/BorrowReturn?handler=Details&transactionId=${transactionId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('transactionId').textContent = data.transactionId;
+                    document.getElementById('borrowerName').textContent = data.borrowerName;
+                    document.getElementById('borrowerContact').textContent = data.borrowerContact;
+                    document.getElementById('borrowDate').textContent = data.borrowDate;
+                    document.getElementById('dueDate').textContent = data.dueDate;
+                    document.getElementById('status').textContent = data.status;
+                    document.getElementById('fine').textContent = data.fine;
+
+                    const booksBorrowed = document.getElementById('booksBorrowed');
+                    booksBorrowed.innerHTML = '';
+                    data.books.forEach(book => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${book.title}</td><td>${book.quantity}</td>`;
+                        booksBorrowed.appendChild(row);
+                    });
+
+                    const modal = new bootstrap.Modal(document.getElementById('transactionDetailsModal'));
+                    modal.show();
+                } else {
+                    alert(data.message || 'Failed to load transaction details.');
+                }
+            })
+            .catch(error => console.error('Error loading transaction details:', error));
+    }
+
+    function markAsReturned(transactionId, event) {
+        event.stopPropagation();
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        fetch(`/BorrowReturn?handler=MarkAsReturned`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify({ TransactionId: transactionId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Transaction marked as returned.");
+                location.reload();
+            } else {
+                alert(data.message || "Failed to update transaction.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>

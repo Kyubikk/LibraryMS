@@ -1,0 +1,95 @@
+@page
+@model LoginSystemApp.Pages.Publishers.IndexModel
+
+<h2>Publisher List</h2>
+<a asp-page="./Create" class="btn btn-primary" style="margin-bottom: 15px;">
+    <i class="bi bi-plus-circle"></i> Add New Publisher
+</a>
+
+<form method="get" style="margin-bottom: 20px;">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Search publishers..." class="form-control" />
+</form>
+
+@if (Model.Publishers == null || !Model.Publishers.Any())
+{
+    <p>No publishers available.</p>
+}
+else
+{
+    <table class="table table-bordered rounded">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var publisher in Model.Publishers)
+            {
+                <tr>
+                    <td>@publisher.Name</td>
+                    <td>@publisher.Address</td>
+                    <td>@publisher.Contact</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-page="./Edit" asp-route-id="@publisher.PublisherId" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="./Delete" asp-route-id="@publisher.PublisherId" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.Publishers.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Publishers.PageIndex - 1)">Previous</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= Model.Publishers.TotalPages; i++)
+            {
+                if (i == Model.Publishers.PageIndex)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">@i</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@i">@i</a>
+                    </li>
+                }
+            }
+
+            @if (Model.Publishers.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Publishers.PageIndex + 1)">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            }
+        </ul>
+    </nav>
+}

@@ -1,0 +1,210 @@
+﻿@page
+@model LoginSystemApp.Pages.IndexModel
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> Localizer
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Localizer["BooksTitle"]</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2f6e7;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #03045E;
+        }
+
+        .section-header p {
+            font-size: 1rem;
+            color: rgba(3, 4, 94, 0.8);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            border: 1px solid #E0E0E0;
+            font-size: 1rem;
+        }
+
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .book-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .book-card h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #03045E;
+            margin-bottom: 10px;
+        }
+
+        .book-card p {
+            font-size: 1rem;
+            color: #03045E;
+            margin-bottom: 10px;
+        }
+
+        .book-card a {
+            color: #00B4D8;
+            text-decoration: underline;
+            font-size: 1rem;
+        }
+
+        .book-card a:hover {
+            color: #0077B6;
+        }
+
+        .no-books {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #03045E;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="section-header" style="text-align: center; padding: 60px 20px; background: linear-gradient(to bottom right, #CAF0F8, #A2D5AB); color: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+            <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 20px; color: #03045E;">Welcome to VNUIS Library</h1>
+            <p style="font-size: 1.25rem; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; color: #03045E;">
+                Search for books, check their details, and find out availability. To borrow, please visit the VNUIS library in person.
+            </p>
+        </section>
+        
+        <section class="search-container">
+            <form method="get">
+                <input type="text" name="searchString" value="@Model.SearchString" placeholder="@Localizer["SearchPlaceholder"]" />
+            </form>
+        </section>
+
+        <section class="books-container">
+            @if (Model.Books != null && Model.Books.Any())
+            {
+                @foreach (var book in Model.Books)
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImagePath" alt="@Localizer["CoverImageAlt"]">
+                        <h3>@book.Title</h3>
+                        <p>@book.Author?.Name</p>
+                        <p>@book.Publisher?.Name</p>
+                        <p>@book.Category?.CategoryName</p>
+                        <p>@book.YearPublished</p>
+                        <p>@book.ISBN</p>
+                        <p>@Localizer["Quantity"] : @book.Quantity</p>
+                        <p>@Localizer["Available"] : @book.Available</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="no-books">@Localizer["NoBooksFound"]</p>
+            }
+        </section>
+        <!-- Thêm phân trang -->
+        <section class="pagination-container" style="margin-top: 50px;">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @if (Model.Books.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Books.PageIndex - 1)">
+                                <i class="bi bi-arrow-left"></i> <!-- Icon Previous -->
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">
+                                <i class="bi bi-arrow-left"></i> <!-- Icon Previous -->
+                            </span>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.Books.TotalPages; i++)
+                    {
+                        if (i == Model.Books.PageIndex)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@i">@i</a>
+                            </li>
+                        }
+                    }
+
+                    @if (Model.Books.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?searchString=@Model.SearchString&pageIndex=@(Model.Books.PageIndex + 1)">
+                                <i class="bi bi-arrow-right"></i> <!-- Icon Next -->
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">
+                                <i class="bi bi-arrow-right"></i> <!-- Icon Next -->
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </section>
+    </main>
+</body>
+</html>

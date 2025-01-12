@@ -1,0 +1,119 @@
+/* _content/LoginSystemApp/Pages/Shared/_Layout.cshtml.rz.scp.css */
+a.navbar-brand[b-weyqt4tpdm] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a[b-weyqt4tpdm] {
+  color: #0077cc;
+}
+
+body[b-weyqt4tpdm]{
+  background-color: #e8f5e9;
+}
+
+.btn-primary[b-weyqt4tpdm] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-weyqt4tpdm], .nav-pills .show > .nav-link[b-weyqt4tpdm] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top[b-weyqt4tpdm] {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom[b-weyqt4tpdm] {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-weyqt4tpdm] {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-weyqt4tpdm] {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer[b-weyqt4tpdm] {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+.input-group-text:hover[b-weyqt4tpdm] {
+  background-color: #e8f5e9; /* Hiệu ứng khi hover */
+  color: #4CAF50; /* Màu xanh nổi bật */
+}
+
+.navbar-brand img[b-weyqt4tpdm] {
+  max-height:0px;
+  margin-right: 10px; /* Khoảng cách giữa logo và chữ (nếu có) */
+  transition: all 0.3s ease;
+}
+
+.navbar-brand img:hover[b-weyqt4tpdm] {
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+/* Tổng quan */
+.navbar[b-weyqt4tpdm] {
+  font-family: 'Roboto', Arial, sans-serif;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+}
+
+/* Logo */
+.navbar-brand[b-weyqt4tpdm] {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Các mục điều hướng */
+.nav-link[b-weyqt4tpdm] {
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link:hover[b-weyqt4tpdm] {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+  border-radius: 6px;
+}
+
+/* Bộ chọn ngôn ngữ */
+.language-selector a[b-weyqt4tpdm] {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+}
+
+.language-selector a:hover[b-weyqt4tpdm] {
+  background-color: #4CAF50;
+  text-decoration: none;
+}
+
+/* Mobile View */
+@media (max-width: 576px) {
+  .navbar-brand[b-weyqt4tpdm] {
+      font-size: 1.2rem;
+  }
+
+  .language-selector a[b-weyqt4tpdm] {
+      font-size: 0.8rem;
+  }
+}

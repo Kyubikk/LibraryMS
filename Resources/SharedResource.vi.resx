@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="BookListTitle" xml:space="preserve">
+    <value>Danh sách sách</value>
+  </data>
+  <data name="AddNewBookButton" xml:space="preserve">
+    <value>Thêm sách mới</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Tìm kiếm sách...</value>
+  </data>
+  <data name="NoBooksMessage" xml:space="preserve">
+    <value>Không có sách nào.</value>
+  </data>
+  <data name="CoverImageColumn" xml:space="preserve">
+    <value>Ảnh bìa</value>
+  </data>
+  <data name="BookTitleColumn" xml:space="preserve">
+    <value>Tên sách</value>
+  </data>
+  <data name="AuthorColumn" xml:space="preserve">
+    <value>Tác giả</value>
+  </data>
+  <data name="PublisherColumn" xml:space="preserve">
+    <value>Nhà xuất bản</value>
+  </data>
+  <data name="CategoryColumn" xml:space="preserve">
+    <value>Thể loại</value>
+  </data>
+  <data name="YearPublishedColumn" xml:space="preserve">
+    <value>Năm xuất bản</value>
+  </data>
+  <data name="ISBNColumn" xml:space="preserve">
+    <value>Mã ISBN</value>
+  </data>
+  <data name="QuantityColumn" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="AvailableColumn" xml:space="preserve">
+    <value>Còn lại</value>
+  </data>
+  <data name="ActionsColumn" xml:space="preserve">
+    <value>Hành động</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+</root>

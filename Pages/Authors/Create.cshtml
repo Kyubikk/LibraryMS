@@ -1,0 +1,23 @@
+@page
+@model LoginSystemApp.Pages.Authors.CreateModel
+
+<h2>Add New Author</h2>
+<div style="max-width: 600px; margin: auto;">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="Name">Author Name</label>
+            <input asp-for="Author.Name" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="Bio">Bio</label>
+            <textarea asp-for="Author.Bio" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="DateOfBirth">Date of Birth</label>
+            <input asp-for="Author.DateOfBirth" type="date" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Author
+        </button>
+    </form>
+</div>

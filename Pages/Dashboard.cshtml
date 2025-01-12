@@ -1,0 +1,167 @@
+@page
+@model LoginSystemApp.Pages.DashboardModel
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> Localizer
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Localizer["DashboardTitle"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+ <div class="min-h-screen">
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Dashboard Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
+                <p class="mt-2 text-gray-600">Welcome back! Here's your analytics summary.</p>
+            </div>
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Total Books Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-100 rounded-full">
+                            <i class="fas fa-book text-blue-600"></i> <!-- Icon for books -->
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-sm font-medium text-gray-600">Total Books</h2>
+                            <p class="text-2xl font-semibold text-gray-900">@Model.TotalBooks</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Available Books Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-100 rounded-full">
+                            <i class="fas fa-check-circle text-green-600"></i> <!-- Icon for available books -->
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-sm font-medium text-gray-600">Available Books</h2>
+                            <p class="text-2xl font-semibold text-gray-900">@Model.AvailableBooks</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Books Borrowed Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-purple-100 rounded-full">
+                            <i class="fas fa-bookmark text-purple-600"></i> <!-- Icon for borrowed books -->
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-sm font-medium text-gray-600">Books Borrowed</h2>
+                            <p class="text-2xl font-semibold text-gray-900">@Model.BooksBorrowed</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Overdue Transactions Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-red-100 rounded-full">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i> <!-- Icon for overdue transactions -->
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-sm font-medium text-gray-600">Overdue Transactions</h2>
+                            <p class="text-2xl font-semibold text-gray-900">@Model.OverdueTransactions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Top 5 Books Borrowed</h3>
+                    <ul class="list-none space-y-2">
+                        @foreach (var book in Model.TopBooks)
+                        {
+                            <li class="flex items-center">
+                                <i class="fas fa-book text-blue-600 mr-2"></i>
+                                <span class="text-lg text-gray-900 font-semibold">@book.Title</span> - 
+                                <span class="text-sm text-gray-600">Borrowed: @book.BorrowCount times</span>
+                                <br>
+                                &nbsp
+                                <br>
+                                &nbsp
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- Books by Category -->
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 mt-8 lg:mt-0"> <!-- Added margin-top for spacing -->
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Books by Category</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <div style="height: 20px;"></div>
+
+            <!-- Charts Section -->
+            <div class="charts-container grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <h4 class="text-xl font-semibold text-gray-900">Books by Author</h4>
+                    <canvas id="authorChart"></canvas>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <h4 class="text-xl font-semibold text-gray-900">Transactions by Time</h4>
+                    <canvas id="transactionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript to Render Charts -->
+    <script>
+        // Category Chart (Pie Chart)
+        var ctx1 = document.getElementById('categoryChart').getContext('2d');
+        var categoryChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CategoryLabels)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.CategoryData)),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
+                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50']
+                }]
+            }
+        });
+
+        // Author Chart (Bar Chart)
+        var ctx2 = document.getElementById('authorChart').getContext('2d');
+        var authorChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.AuthorLabels)),
+                datasets: [{
+                    label: 'Books by Author',
+                    data: @Html.Raw(Json.Serialize(Model.AuthorData)),
+                    backgroundColor: '#36A2EB',
+                    borderColor: '#2C3E50',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Transaction Chart (Line Chart)
+        var ctx3 = document.getElementById('transactionChart').getContext('2d');
+        var transactionChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.TransactionDates)),
+                datasets: [{
+                    label: 'Transactions by Time',
+                    data: @Html.Raw(Json.Serialize(Model.TransactionData)),
+                    fill: false,
+                    borderColor: '#FF6384',
+                    tension: 0.1
+                }]
+            }
+        });
+    </script>
+</html>

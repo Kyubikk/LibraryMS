@@ -1,0 +1,21 @@
+@page "{id:int}"
+@model LoginSystemApp.Pages.Authors.EditModel
+
+<h2>Edit Author</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input asp-for="Author.Name" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="Bio">Bio</label>
+        <textarea asp-for="Author.Bio" class="form-control" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="DateOfBirth">Date of Birth</label>
+        <input asp-for="Author.DateOfBirth" class="form-control" type="date" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="BookListTitle" xml:space="preserve">
+    <value>Book List</value>
+  </data>
+  <data name="AddNewBookButton" xml:space="preserve">
+    <value>Add New Book</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search books...</value>
+  </data>
+  <data name="NoBooksMessage" xml:space="preserve">
+    <value>No books available.</value>
+  </data>
+  <data name="CoverImageColumn" xml:space="preserve">
+    <value>Cover Image</value>
+  </data>
+  <data name="BookTitleColumn" xml:space="preserve">
+    <value>Book Title</value>
+  </data>
+  <data name="AuthorColumn" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="PublisherColumn" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="CategoryColumn" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="YearPublishedColumn" xml:space="preserve">
+    <value>Year Published</value>
+  </data>
+  <data name="ISBNColumn" xml:space="preserve">
+    <value>ISBN</value>
+  </data>
+  <data name="QuantityColumn" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="AvailableColumn" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="ActionsColumn" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+</root>
